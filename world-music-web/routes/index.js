@@ -71,6 +71,12 @@ router.get('/recommendmusic', function(req, res, next) {
 
 });
 
+router.post('/findsearchnew', function(req, res, next) {
+  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
+  var html = template({ title: 'Find' })
+  res.send(html);
+});
+
 // router.get('/data/:email', function(req,res) {
 //   // use console.log() as print() in case you want to debug, example below:
 //   // console.log("inside person email");
