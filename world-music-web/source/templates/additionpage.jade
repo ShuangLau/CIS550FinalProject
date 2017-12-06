@@ -1,17 +1,25 @@
 extend default
 
 block content
-  p.
-    Please entry the music name you want to add:
-  p.
-    ZABA is primarily a psychedelic indie pop record. The album's sound is characterized by 
-    obscure tropical percussion and jungle timbres. This musical motif reflects lead singer 
-    David Bayley's exotic subject matter, which was inspired by the William Steig children's 
-    book The Zabajaba Jungle.
+    .main.container
+    .row
+      .col-md-6.col-md-offset-3
+        h1.display-4.m-b-2 L'équipe
 
-  p.
-    Throughout its composition, ZABA explores the concept of min- imalism, allowing the beats, 
-    melodies, and lyrics to "speak for themselves".ZABA's songs are connected by self-described 
-    "interludes" of echoed electronics, varied percussion, and smooth jazz, weaving them together 
-    so that while each indivi- dual track is distinctive, the album "melts" into a single, mellow 
-    groove.
+        // search form
+        form(method='POST' action='/add')
+          label(for='song') SONG
+          div.form-group
+            input#song.form-control(type='text', placeholder='song name' name='song', width="48")
+          label(for='singer') SINGER
+          div.form-group
+            input#singer.form-control(type='text', placeholder='singer name' name='singer')
+          label(for='genre') GENRE
+          div.form-group
+            input#genre.form-control(type='text', placeholder='song genre' name='genre')
+          label(for='album') ALBUM
+          div.form-group
+            input#album.form-control(type='text' name='album', placeholder='album name')
+
+
+          button.btn.btn-primary(type='submit') ADD

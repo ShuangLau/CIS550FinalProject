@@ -59,6 +59,18 @@ router.get('/addition', function(req, res, next) {
 
 });
 
+router.get('/recommendmusic', function(req, res, next) {
+  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/recommendmusicpage.jade'));
+  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  try {
+    var html = template({ title: 'music' })
+    res.send(html)
+  } catch (e) {
+    next(e)
+  }
+
+});
+
 // router.get('/data/:email', function(req,res) {
 //   // use console.log() as print() in case you want to debug, example below:
 //   // console.log("inside person email");
