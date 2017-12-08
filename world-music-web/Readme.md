@@ -13,7 +13,10 @@ sudo npm i
 sudo npm run build
 sudo nohup npm start & 
 
-
+#to quit
+ps -ef 
+>>find pid
+sudo kill -9 [pid]
 
 ```
 ## Setup
