@@ -2,6 +2,20 @@
 
 A simple website in node js to accompany a blog post.
 
+## deploy on aws
+```
+music.alanzyy.com
+
+sudo nano app.js
+>>change port 3000 to 80
+
+sudo npm i
+sudo npm run build
+sudo nohup npm start & 
+
+
+
+```
 ## Setup
 
 ```
