@@ -1,17 +1,13 @@
 extend default
 
 block content
-  p.
-    Please entry the music name you want to recommend:
-  p.
-    ZABA is primarily a psychedelic indie pop record. The album's sound is characterized by 
-    obscure tropical percussion and jungle timbres. This musical motif reflects lead singer 
-    David Bayley's exotic subject matter, which was inspired by the William Steig children's 
-    book The Zabajaba Jungle.
+  h1= title
 
-  p.
-    Throughout its composition, ZABA explores the concept of min- imalism, allowing the beats, 
-    melodies, and lyrics to "speak for themselves".ZABA's songs are connected by self-described 
-    "interludes" of echoed electronics, varied percussion, and smooth jazz, weaving them together 
-    so that while each indivi- dual track is distinctive, the album "melts" into a single, mellow 
-    groove.
+  table
+    thead
+      tr
+        th First Name
+    tbody
+      - each item in rows
+        tr
+          td= item.title

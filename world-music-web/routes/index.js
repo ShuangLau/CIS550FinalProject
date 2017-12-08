@@ -1,16 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
-
-// // Connect string to MySQL
-// var mysql = require('mysql');
-// var connection = mysql.createConnection({
-//   host     : 'fling.seas.upenn.edu',
-//   user     : 'shuangl',
-//   password : '',
-//   database : 'shuangl'
-// });
-
+  var mysql = require('mysql');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   template = require('jade').compileFile(path.join(__dirname, '../', '/source/templates/homepage.jade'));
@@ -72,9 +63,30 @@ router.get('/recommendmusic', function(req, res, next) {
 });
 
 router.post('/findsearchnew', function(req, res, next) {
+  var connection = mysql.createConnection({
+    host     : "cis550project.cod7doq3mxuo.us-west-1.rds.amazonaws.com",
+    user     : "CIS550Project",
+    password : "CIS550Project",
+    port     : "3306",
+    database : "innodb"
+  });
+  console.log(req.body.song);
+
+
+
+  var sql = 'SELECT title from genres';
+
   template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
-  var html = template({ title: 'Find' })
-  res.send(html);
+  
+  //res.send(html);
+  connection.query(sql, function(err, rows, fields) {
+    if (err) throw err;
+    var html = template({ title: 'L\'équipe', rows: rows })
+    res.send(html);
+    //res.render('findsearchnew', { title: 'Users', rows: rows });
+  });
+
+
 });
 
 // router.get('/data/:email', function(req,res) {
