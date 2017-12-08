@@ -1,25 +1,61 @@
 extend default
 
 block content
-    .main.container
-    .row
-      .col-md-6.col-md-offset-3
-        h1.display-4.m-b-2 L'équipe
+  .wrapper
+      .left
+        table(margin)
+          thead
+            tr
+              th(align='left') Singer
+          tbody
+            td Glass Animal
 
-        // search form
-        form(method='POST' action='/find')
-          label(for='song') SONG
-          div.form-group
-            input#song.form-control(type='text', placeholder='song name' name='song', width="48")
-          label(for='singer') SINGER
-          div.form-group
-            input#singer.form-control(type='text', placeholder='singer name' name='singer')
-          label(for='genre') GENRE
-          div.form-group
-            input#genre.form-control(type='text', placeholder='song genre' name='genre')
-          label(for='album') ALBUM
-          div.form-group
-            input#album.form-control(type='text' name='album', placeholder='album name')
+        table
+          thead
+            tr
+              th(align='left') Song
+          tbody
+            td Gooey
 
+        table
+          thead
+            tr
+              th(align='left') Genre
+          tbody
+            td Indie
 
-          button.btn.btn-primary(type='submit') SEARCH
+        table
+          thead
+            tr
+              th(align='left') Album
+          tbody
+            td HABA
+
+        table
+          thead
+            tr
+              th(align='left') Release
+          tbody
+            td 2015
+
+        table
+          thead
+            tr
+              th(align='left') Rate
+          tbody
+            td 8.5
+
+      .right
+        img(src="//cdn2.thelineofbestfit.com/images/made/images/remote/https_cdn2.thelineofbestfit.com/media/2014/glass-animals-zaba_600_600.jpg", width="380")
+  p.
+    ZABA is primarily a psychedelic indie pop record. The album's sound is characterized by 
+    obscure tropical percussion and jungle timbres. This musical motif reflects lead singer 
+    David Bayley's exotic subject matter, which was inspired by the William Steig children's 
+    book The Zabajaba Jungle.
+
+  p.
+    Throughout its composition, ZABA explores the concept of min- imalism, allowing the beats, 
+    melodies, and lyrics to "speak for themselves".ZABA's songs are connected by self-described 
+    "interludes" of echoed electronics, varied percussion, and smooth jazz, weaving them together 
+    so that while each indivi- dual track is distinctive, the album "melts" into a single, mellow 
+    groove.
