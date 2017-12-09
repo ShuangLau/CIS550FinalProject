@@ -84,11 +84,27 @@ router.post('/findsearchnew', function(req, res, next) {
 
 // Connect to the db
 MongoClient.connect("mongodb://cis550:CIS550Project@ds133776.mlab.com:33776/nosqldb", function(err, db) {
-  if(!err) {
-      db.collection("genres").find({title: genrename}).toArray(function(err, result) {
+  // if(!err) {
+  //     db.collection("genres").find({title: genrename}).toArray(function(err, result) {
+  //       if (err){
+  //         throw err;
+  //       }
+  //       console.log(result);
+  //       template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
+  //       var html = template({ title: 'MUSIC', rows: result})
+  //       res.send(html);
+  //     });  
+      // console.log("We are connected");
+
+
+      if(!err) {
+        const mDB = db.db('nosqldb');
+
+      mDB.collection("genres").find({title: genrename}).toArray(function(err, result) {
         if (err){
           throw err;
         }
+        console.log(result);
         template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
         var html = template({ title: 'MUSIC', rows: result})
         res.send(html);
