@@ -99,8 +99,9 @@ MongoClient.connect("mongodb://cis550:CIS550Project@ds133776.mlab.com:33776/nosq
 
       if(!err) {
         const mDB = db.db('nosqldb');
+        var regex_genrename = new RegExp(["^", genrename, "$"].join(""), "i");
 
-      mDB.collection("genres").find({title: genrename}).toArray(function(err, result) {
+      mDB.collection("genres").find({title: regex_genrename}).toArray(function(err, result) {
         if (err){
           throw err;
         }
