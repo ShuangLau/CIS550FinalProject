@@ -17,6 +17,20 @@ router.get('/', function(req, res, next) {
 router.get('/find', function(req, res, next) {
   template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findpage.jade'));
   //res.sendFile(path.join(__dirname, '../', 'views', 'reference.html'));
+  // console.log(req.body)
+  // if(req.body.all){
+  //   var song = req.body.song;
+  //   var singer = req.body.singer;
+  //   console.log(song);
+  //   console.log()
+  // }
+  // var e = document.getElementById("typeselect");
+  // var value = e.options[e.selectedIndex].value;
+  // var strUser = e.options[e.selectedIndex].text;
+  // if(text == "songandsinger")
+  //   console.log(song);
+
+
   try {
     var html = template({ title: 'Find' })
     res.send(html)
@@ -60,21 +74,42 @@ router.post('/findsearchnew', function(req, res, next) {
   });
   console.log(req.body.song);
   var songname = req.body.song;
+  var singername =req.body.singer;
+  var genrename = req.body.genre;
 
 
+  if(req.body.typeselect =='genre'){
 
+    var MongoClient = require('mongodb').MongoClient;
+
+// Connect to the db
+MongoClient.connect("mongodb://cis550:CIS550Project@ds133776.mlab.com:33776/nosqldb", function(err, db) {
+  if(!err) {
+      db.collection("genres").find({title: genrename}).toArray(function(err, result) {
+        if (err){
+          throw err;
+        }
+        template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
+        var html = template({ title: 'MUSIC', rows: result})
+        res.send(html);
+      });  
+      console.log("We are connected");
+  }
+
+});
+}
   //var sql = 'SELECT title from genres';
-  var sql = 'SELECT artist_name from songs where title ="'+ songname+ '"';
+  // var sql = 'SELECT artist_name from songs where title ="'+ songname+ '"';
 
-  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
+  // template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
   
-  //res.send(html);
-  connection.query(sql, function(err, rows, fields) {
-    if (err) throw err;
-    var html = template({ title: 'L\'équipe', rows: rows })
-    res.send(html);
-    //res.render('findsearchnew', { title: 'Users', rows: rows });
-  });
+  // //res.send(html);
+  // connection.query(sql, function(err, rows, fields) {
+  //   if (err) throw err;
+  //   var html = template({ title: 'L\'équipe', rows: rows })
+  //   res.send(html);
+  //   //res.render('findsearchnew', { title: 'Users', rows: rows });
+  // });
 
 
 });

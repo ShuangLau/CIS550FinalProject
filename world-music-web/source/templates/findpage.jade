@@ -10,10 +10,10 @@ block content
         form(method='POST' action='/findsearchnew')
           label(for='type') INFORMATION TYPE
           div.form-group
-            select(id="xxx", name="xxxyyy")
-              option(value="#songandsinger") Song and Singer
-              option(value="#genre") Genre
-              option(value="#all") All
+            select(class="typeselect", name="typeselect")
+              option(value="songandsinger" selected="selected") Song and Singer
+              option(value="genre") Genre
+              option(value="all") All
 
           label(for='song') SONG
           div.form-group
