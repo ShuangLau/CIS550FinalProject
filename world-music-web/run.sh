@@ -1,0 +1,2 @@
+
+sudo nohup npm start &
