@@ -8,45 +8,40 @@ block content
             tr
               th(align='left') Singer
           tbody
-            - each item in rows
-              tr
-                td= item.artist_name
+            tr
+              td= rows[0].artist_name
 
         table
           thead
             tr
               th(align='left') Song
           tbody
-            - each item in rows
-              tr
-                td= item.title
+            tr
+              td= rows[0].title
 
         table
           thead
             tr
               th(align='left') Genre
           tbody
-            - each item in rows
-              tr
-                td= item.mbtag
+            tr
+              td= rows[0].mbtag
 
         table
           thead
             tr
               th(align='left') Release
           tbody
-            - each item in rows
-              tr
-                td= item.year
+            tr
+              td= rows[0].year
 
         table
           thead
             tr
               th(align='left') Rate
           tbody
-            - each item in rows
-              tr
-                td= (item.artist_hotttnesss *10).toFixed(1)
+            tr
+              td= (rows[0].artist_hotttnesss *10).toFixed(1)
 
       .right
         img(src="https://i1.sndcdn.com/artworks-000215448584-3upr1x-t500x500.jpg", width="380")
