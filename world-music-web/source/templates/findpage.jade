@@ -8,6 +8,13 @@ block content
 
         // search form
         form(method='POST' action='/findsearchnew')
+          label(for='type') INFORMATION TYPE
+          div.form-group
+            select(id="xxx", name="xxxyyy")
+              option(value="#songandsinger") Song and Singer
+              option(value="#genre") Genre
+              option(value="#all") All
+
           label(for='song') SONG
           div.form-group
             input#song.form-control(type='text', placeholder='song name' name='song', width="48")
