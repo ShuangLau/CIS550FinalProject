@@ -50,18 +50,6 @@ router.get('/addition', function(req, res, next) {
 
 });
 
-router.get('/recommendmusic', function(req, res, next) {
-  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/recommendmusicpage.jade'));
-  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
-  try {
-    var html = template({ title: 'music' })
-    res.send(html)
-  } catch (e) {
-    next(e)
-  }
-
-});
-
 router.post('/findsearchnew', function(req, res, next) {
   var connection = mysql.createConnection({
     host     : "cis550project.cod7doq3mxuo.us-west-1.rds.amazonaws.com",
@@ -71,10 +59,12 @@ router.post('/findsearchnew', function(req, res, next) {
     database : "innodb"
   });
   console.log(req.body.song);
+  var songname = req.body.song;
 
 
 
-  var sql = 'SELECT title from genres';
+  //var sql = 'SELECT title from genres';
+  var sql = 'SELECT artist_name from songs where title ="'+ songname+ '"';
 
   template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
   
@@ -88,6 +78,219 @@ router.post('/findsearchnew', function(req, res, next) {
 
 
 });
+
+router.get('/recommendmusic1', function(req, res, next) {
+  var connection = mysql.createConnection({
+    host     : "cis550project.cod7doq3mxuo.us-west-1.rds.amazonaws.com",
+    user     : "CIS550Project",
+    password : "CIS550Project",
+    port     : "3306",
+    database : "innodb"
+  });
+
+  //var sql = 'select title, artist_name, year, artist_hotttnesss from songs order by artist_hotttnesss desc limit 1';
+  //var sql = 'select DISTINCT title, artist_name, year, artist_hotttnesss, mbtag from songs LEFT JOIN artist_mbtag ON songs.artist_id = artist_mbtag.artist_id order by artist_hotttnesss desc limit 1';
+  var sql = 'select DISTINCT title, artist_name, year, artist_hotttnesss, artist_mbtag.mbtag from songs LEFT JOIN artist_mbtag ON songs.artist_id = artist_mbtag.artist_id GROUP BY artist_name order by artist_hotttnesss desc limit 9';
+  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/recommendmusicpage1.jade'));
+  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  connection.query(sql, function(err, rows, fields) {
+    if (err) throw err;
+    //console.log(rows[1].title);
+    //var rows = rows[1];
+    //var row2 = rows.rows.item(1);
+    //console.log(rows.rows.item(1));
+    var html = template({ title: 'MUSIC', rows: rows})
+    res.send(html);
+    //res.render('findsearchnew', { title: 'Users', rows: rows });
+  });
+
+});
+
+router.get('/recommendmusic2', function(req, res, next) {
+  var connection = mysql.createConnection({
+    host     : "cis550project.cod7doq3mxuo.us-west-1.rds.amazonaws.com",
+    user     : "CIS550Project",
+    password : "CIS550Project",
+    port     : "3306",
+    database : "innodb"
+  });
+
+  //var sql = 'select title, artist_name, year, artist_hotttnesss from songs order by artist_hotttnesss desc limit 1';
+  var sql = 'select DISTINCT title, artist_name, year, artist_hotttnesss, artist_mbtag.mbtag from songs LEFT JOIN artist_mbtag ON songs.artist_id = artist_mbtag.artist_id GROUP BY artist_name order by artist_hotttnesss desc limit 9';
+
+  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/recommendmusicpage2.jade'));
+  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  connection.query(sql, function(err, rows, fields) {
+    if (err) throw err;
+    var html = template({ title: 'MUSIC', rows: rows})
+    res.send(html);
+    //res.render('findsearchnew', { title: 'Users', rows: rows });
+  });
+
+});
+
+router.get('/recommendmusic3', function(req, res, next) {
+  var connection = mysql.createConnection({
+    host     : "cis550project.cod7doq3mxuo.us-west-1.rds.amazonaws.com",
+    user     : "CIS550Project",
+    password : "CIS550Project",
+    port     : "3306",
+    database : "innodb"
+  });
+
+  //var sql = 'select title, artist_name, year, artist_hotttnesss from songs order by artist_hotttnesss desc limit 1';
+  var sql = 'select DISTINCT title, artist_name, year, artist_hotttnesss, artist_mbtag.mbtag from songs LEFT JOIN artist_mbtag ON songs.artist_id = artist_mbtag.artist_id GROUP BY artist_name order by artist_hotttnesss desc limit 9';
+
+  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/recommendmusicpage3.jade'));
+  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  connection.query(sql, function(err, rows, fields) {
+    if (err) throw err;
+    var html = template({ title: 'MUSIC', rows: rows})
+    res.send(html);
+    //res.render('findsearchnew', { title: 'Users', rows: rows });
+  });
+
+});
+
+router.get('/recommendmusic4', function(req, res, next) {
+  var connection = mysql.createConnection({
+    host     : "cis550project.cod7doq3mxuo.us-west-1.rds.amazonaws.com",
+    user     : "CIS550Project",
+    password : "CIS550Project",
+    port     : "3306",
+    database : "innodb"
+  });
+
+  //var sql = 'select title, artist_name, year, artist_hotttnesss from songs order by artist_hotttnesss desc limit 1';
+  var sql = 'select DISTINCT title, artist_name, year, artist_hotttnesss, artist_mbtag.mbtag from songs LEFT JOIN artist_mbtag ON songs.artist_id = artist_mbtag.artist_id GROUP BY artist_name order by artist_hotttnesss desc limit 9';
+
+  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/recommendmusicpage4.jade'));
+  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  connection.query(sql, function(err, rows, fields) {
+    if (err) throw err;
+    var html = template({ title: 'MUSIC', rows: rows})
+    res.send(html);
+    //res.render('findsearchnew', { title: 'Users', rows: rows });
+  });
+
+});
+
+router.get('/recommendmusic5', function(req, res, next) {
+  var connection = mysql.createConnection({
+    host     : "cis550project.cod7doq3mxuo.us-west-1.rds.amazonaws.com",
+    user     : "CIS550Project",
+    password : "CIS550Project",
+    port     : "3306",
+    database : "innodb"
+  });
+
+  //var sql = 'select title, artist_name, year, artist_hotttnesss from songs order by artist_hotttnesss desc limit 1';
+  var sql = 'select DISTINCT title, artist_name, year, artist_hotttnesss, artist_mbtag.mbtag from songs LEFT JOIN artist_mbtag ON songs.artist_id = artist_mbtag.artist_id GROUP BY artist_name order by artist_hotttnesss desc limit 9';
+
+  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/recommendmusicpage5.jade'));
+  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  connection.query(sql, function(err, rows, fields) {
+    if (err) throw err;
+    var html = template({ title: 'MUSIC', rows: rows})
+    res.send(html);
+    //res.render('findsearchnew', { title: 'Users', rows: rows });
+  });
+
+});
+
+router.get('/recommendmusic6', function(req, res, next) {
+  var connection = mysql.createConnection({
+    host     : "cis550project.cod7doq3mxuo.us-west-1.rds.amazonaws.com",
+    user     : "CIS550Project",
+    password : "CIS550Project",
+    port     : "3306",
+    database : "innodb"
+  });
+
+  //var sql = 'select title, artist_name, year, artist_hotttnesss from songs order by artist_hotttnesss desc limit 1';
+  var sql = 'select DISTINCT title, artist_name, year, artist_hotttnesss, artist_mbtag.mbtag from songs LEFT JOIN artist_mbtag ON songs.artist_id = artist_mbtag.artist_id GROUP BY artist_name order by artist_hotttnesss desc limit 9';
+
+  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/recommendmusicpage6.jade'));
+  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  connection.query(sql, function(err, rows, fields) {
+    if (err) throw err;
+    var html = template({ title: 'MUSIC', rows: rows})
+    res.send(html);
+    //res.render('findsearchnew', { title: 'Users', rows: rows });
+  });
+
+});
+
+router.get('/recommendmusic7', function(req, res, next) {
+  var connection = mysql.createConnection({
+    host     : "cis550project.cod7doq3mxuo.us-west-1.rds.amazonaws.com",
+    user     : "CIS550Project",
+    password : "CIS550Project",
+    port     : "3306",
+    database : "innodb"
+  });
+
+  //var sql = 'select title, artist_name, year, artist_hotttnesss from songs order by artist_hotttnesss desc limit 1';
+  var sql = 'select DISTINCT title, artist_name, year, artist_hotttnesss, artist_mbtag.mbtag from songs LEFT JOIN artist_mbtag ON songs.artist_id = artist_mbtag.artist_id GROUP BY artist_name order by artist_hotttnesss desc limit 9';
+
+  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/recommendmusicpage7.jade'));
+  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  connection.query(sql, function(err, rows, fields) {
+    if (err) throw err;
+    var html = template({ title: 'MUSIC', rows: rows})
+    res.send(html);
+    //res.render('findsearchnew', { title: 'Users', rows: rows });
+  });
+
+});
+
+router.get('/recommendmusic8', function(req, res, next) {
+  var connection = mysql.createConnection({
+    host     : "cis550project.cod7doq3mxuo.us-west-1.rds.amazonaws.com",
+    user     : "CIS550Project",
+    password : "CIS550Project",
+    port     : "3306",
+    database : "innodb"
+  });
+
+  //var sql = 'select title, artist_name, year, artist_hotttnesss from songs order by artist_hotttnesss desc limit 1';
+  var sql = 'select DISTINCT title, artist_name, year, artist_hotttnesss, artist_mbtag.mbtag from songs LEFT JOIN artist_mbtag ON songs.artist_id = artist_mbtag.artist_id GROUP BY artist_name order by artist_hotttnesss desc limit 9';
+
+  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/recommendmusicpage8.jade'));
+  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  connection.query(sql, function(err, rows, fields) {
+    if (err) throw err;
+    var html = template({ title: 'MUSIC', rows: rows})
+    res.send(html);
+    //res.render('findsearchnew', { title: 'Users', rows: rows });
+  });
+
+});
+
+router.get('/recommendmusic9', function(req, res, next) {
+  var connection = mysql.createConnection({
+    host     : "cis550project.cod7doq3mxuo.us-west-1.rds.amazonaws.com",
+    user     : "CIS550Project",
+    password : "CIS550Project",
+    port     : "3306",
+    database : "innodb"
+  });
+
+  //var sql = 'select title, artist_name, year, artist_hotttnesss from songs order by artist_hotttnesss desc limit 1';
+  var sql = 'select DISTINCT title, artist_name, year, artist_hotttnesss, artist_mbtag.mbtag from songs LEFT JOIN artist_mbtag ON songs.artist_id = artist_mbtag.artist_id GROUP BY artist_name order by artist_hotttnesss desc limit 9';
+
+  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/recommendmusicpage9.jade'));
+  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  connection.query(sql, function(err, rows, fields) {
+    if (err) throw err;
+    var html = template({ title: 'MUSIC', rows: rows})
+    res.send(html);
+    //res.render('findsearchnew', { title: 'Users', rows: rows });
+  });
+
+});
+
+
 
 // router.get('/data/:email', function(req,res) {
 //   // use console.log() as print() in case you want to debug, example below:

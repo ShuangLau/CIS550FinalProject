@@ -8,45 +8,43 @@ block content
             tr
               th(align='left') Singer
           tbody
-            td Glass Animal
+              tr
+                td= rows[7].artist_name
 
         table
           thead
             tr
               th(align='left') Song
           tbody
-            td Gooey
+              tr
+                td= rows[7].title
 
         table
           thead
             tr
               th(align='left') Genre
           tbody
-            td Indie
-
-        table
-          thead
-            tr
-              th(align='left') Album
-          tbody
-            td HABA
+              tr
+                td= rows[7].mbtag
 
         table
           thead
             tr
               th(align='left') Release
           tbody
-            td 2015
+              tr
+                td= rows[7].year
 
         table
           thead
             tr
               th(align='left') Rate
           tbody
-            td 8.5
+              tr
+                td= (rows[7].artist_hotttnesss *10).toFixed(1)
 
       .right
-        img(src="//cdn2.thelineofbestfit.com/images/made/images/remote/https_cdn2.thelineofbestfit.com/media/2014/glass-animals-zaba_600_600.jpg", width="380")
+        img(src="https://t2.genius.com/unsafe/440x0/https%3A%2F%2Fimages.genius.com%2Fa3fb19b50bfb5b16fbccd9c6415d22e9.600x600x1.jpg", width="380")
   p.
     ZABA is primarily a psychedelic indie pop record. The album's sound is characterized by 
     obscure tropical percussion and jungle timbres. This musical motif reflects lead singer 

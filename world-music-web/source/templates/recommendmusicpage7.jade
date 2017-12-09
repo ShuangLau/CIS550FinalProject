@@ -1,0 +1,59 @@
+extend default
+
+block content
+  .wrapper
+      .left
+        table(margin)
+          thead
+            tr
+              th(align='left') Singer
+          tbody
+              tr
+                td= rows[6].artist_name
+
+        table
+          thead
+            tr
+              th(align='left') Song
+          tbody
+              tr
+                td= rows[6].title
+
+        table
+          thead
+            tr
+              th(align='left') Genre
+          tbody
+              tr
+                td= rows[6].mbtag
+
+        table
+          thead
+            tr
+              th(align='left') Release
+          tbody
+              tr
+                td= rows[6].year
+
+        table
+          thead
+            tr
+              th(align='left') Rate
+          tbody
+              tr
+                td= (rows[6].artist_hotttnesss *10).toFixed(1)
+
+      .right
+        img(src="https://f4.bcbits.com/img/a2351616332_16.jpg", width="380")
+  p.
+    ZABA is primarily a psychedelic indie pop record. The album's sound is characterized by 
+    obscure tropical percussion and jungle timbres. This musical motif reflects lead singer 
+    David Bayley's exotic subject matter, which was inspired by the William Steig children's 
+    book The Zabajaba Jungle.
+
+  p.
+    Throughout its composition, ZABA explores the concept of min- imalism, allowing the beats, 
+    melodies, and lyrics to "speak for themselves".ZABA's songs are connected by self-described 
+    "interludes" of echoed electronics, varied percussion, and smooth jazz, weaving them together 
+    so that while each indivi- dual track is distinctive, the album "melts" into a single, mellow 
+    groove.
