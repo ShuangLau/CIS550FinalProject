@@ -64,6 +64,39 @@ router.get('/addition', function(req, res, next) {
 
 });
 
+router.post('/addsuccess', function(req, res, next) {
+  var songname = req.body.song;
+  var singername =req.body.singer;
+  var albumname = req.body.album;
+
+  var connection = mysql.createConnection({
+    host     : "cis550project.cod7doq3mxuo.us-west-1.rds.amazonaws.com",
+    user     : "CIS550Project",
+    password : "CIS550Project",
+    port     : "3306",
+    database : "innodb"
+  });
+
+  console.log(req.body.song);
+  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/additionsuccess.jade'));
+  var randomNumberBetween0and19 = Math.floor(Math.random() * 200000000);
+  console.log(randomNumberBetween0and19);
+  var sql = 'INSERT INTO songs (track_id, title,artist_name, release_album) VALUES ("'+randomNumberBetween0and19+'", "'+songname+'", "'+singername+'", "'+albumname+'")';
+
+  connection.query(sql, function(err, rows, fields) {
+    if (err) throw err;
+    //console.log(rows[1].title);
+    //var rows = rows[1];
+    //var row2 = rows.rows.item(1);
+    //console.log(rows.rows.item(1));
+    var html = template({ title: 'MUSIC'})
+    res.send(html);
+    //res.render('findsearchnew', { title: 'Users', rows: rows });
+  });
+
+
+});
+
 router.post('/findsearchnew', function(req, res, next) {
   var connection = mysql.createConnection({
     host     : "cis550project.cod7doq3mxuo.us-west-1.rds.amazonaws.com",
