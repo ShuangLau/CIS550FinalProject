@@ -6,8 +6,9 @@ block content
   table
     thead
       tr
-        th First Name
+        th Top ten album of the searched genre
     tbody
       - each item in rows
         tr
-          td= item.title
+          td= item.album_title
+          td= item.track_url
