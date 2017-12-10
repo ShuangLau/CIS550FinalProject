@@ -76,6 +76,7 @@ router.post('/findsearchnew', function(req, res, next) {
   var songname = req.body.song;
   var singername =req.body.singer;
   var genrename = req.body.genre;
+  var albumname = req.body.album;
 
 
   if(req.body.typeselect =='genre'){
@@ -99,9 +100,10 @@ MongoClient.connect("mongodb://cis550:CIS550Project@ds133776.mlab.com:33776/nosq
 
       if(!err) {
         const mDB = db.db('nosqldb');
-        var regex_genrename = new RegExp(["^", genrename, "$"].join(""), "i");
+        //var regex_genrename = new RegExp(["^", genrename, "$"].join(""), "i");
+        console.log("track_genres:" + "[{'genre_id': '10', 'genre_title':" + genrename + ", 'genre_url': 'http://freemusicarchive.org/genre/Pop/'}]");
 
-      mDB.collection("genres").find({title: regex_genrename}).toArray(function(err, result) {
+      mDB.collection("raw_tracks").find({"track_genres": "[{'genre_id': '10', 'genre_title': '" + genrename + "', 'genre_url': 'http://freemusicarchive.org/genre/Pop/'}]"}).sort({track_listens:-1}).limit(10).toArray(function(err, result) {
         if (err){
           throw err;
         }
@@ -112,6 +114,22 @@ MongoClient.connect("mongodb://cis550:CIS550Project@ds133776.mlab.com:33776/nosq
       });  
       console.log("We are connected");
   }
+  //     if(!err) {
+  //       const mDB = db.db('nosqldb');
+  //       //var regex_genrename = new RegExp(["^", genrename, "$"].join(""), "i");
+  //       console.log();
+
+  //     mDB.collection("raw_tracks").find({"track_genres": { $elemMatch: { genre_title: genrename } }}).sort({track_listens:-1}).limit(10).toArray(function(err, result) {
+  //       if (err){
+  //         throw err;
+  //       }
+  //       console.log(result);
+  //       template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
+  //       var html = template({ title: 'MUSIC', rows: result})
+  //       res.send(html);
+  //     });  
+  //     console.log("We are connected");
+  // }
 
 });
 }
@@ -127,6 +145,78 @@ MongoClient.connect("mongodb://cis550:CIS550Project@ds133776.mlab.com:33776/nosq
   //   res.send(html);
   //   //res.render('findsearchnew', { title: 'Users', rows: rows });
   // });
+
+if(req.body.typeselect == 'songandsinger'){
+   var MongoClient = require('mongodb').MongoClient;
+   MongoClient.connect("mongodb://cis550:CIS550Project@ds133776.mlab.com:33776/nosqldb", function(err, db){
+    if(!err) {
+        const mDB = db.db('nosqldb');
+        //var regex_genrename = new RegExp(["^", genrename, "$"].join(""), "i");
+        console.log();
+
+      mDB.collection("raw_tracks").find({$and: [{"artist_name": singername},{"track_title": songname}]}).toArray(function(err, result) {
+        if (err){
+          throw err;
+        }
+        console.log(result);
+        template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
+        var html = template({ title: 'MUSIC', rows: result})
+        res.send(html);
+      });  
+      console.log("We are connected");
+    }
+
+   });
+
+}
+
+if(req.body.typeselect == 'album'){
+   var MongoClient = require('mongodb').MongoClient;
+   MongoClient.connect("mongodb://cis550:CIS550Project@ds133776.mlab.com:33776/nosqldb", function(err, db){
+    if(!err) {
+        const mDB = db.db('nosqldb');
+        //var regex_genrename = new RegExp(["^", genrename, "$"].join(""), "i");
+        console.log();
+
+      mDB.collection("raw_tracks").find({album_title: albumname}).toArray(function(err, result) {
+        if (err){
+          throw err;
+        }
+        console.log(result);
+        template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
+        var html = template({ title: 'MUSIC', rows: result})
+        res.send(html);
+      });  
+      console.log("We are connected");
+    }
+
+   });
+
+}
+
+if(req.body.typeselect == 'all'){
+   var MongoClient = require('mongodb').MongoClient;
+   MongoClient.connect("mongodb://cis550:CIS550Project@ds133776.mlab.com:33776/nosqldb", function(err, db){
+    if(!err) {
+        const mDB = db.db('nosqldb');
+        //var regex_genrename = new RegExp(["^", genrename, "$"].join(""), "i");
+        console.log();
+
+      mDB.collection("raw_tracks").find({$and: [{"artist_name": singername},{"track_title": songname},{album_title: albumname}]}).toArray(function(err, result) {
+        if (err){
+          throw err;
+        }
+        console.log(result);
+        template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
+        var html = template({ title: 'MUSIC', rows: result})
+        res.send(html);
+      });  
+      console.log("We are connected");
+    }
+
+   });
+
+}
 
 
 });

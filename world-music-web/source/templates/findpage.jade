@@ -12,7 +12,7 @@ block content
           div.form-group
             select(class="typeselect", name="typeselect")
               option(value="songandsinger" selected="selected") Song and Singer
-              option(value="genre") Genre
+              option(value="album") Album
               option(value="all") All
 
           label(for='song') SONG
@@ -21,9 +21,6 @@ block content
           label(for='singer') SINGER
           div.form-group
             input#singer.form-control(type='text', placeholder='singer name' name='singer')
-          label(for='genre') GENRE
-          div.form-group
-            input#genre.form-control(type='text', placeholder='song genre' name='genre')
           label(for='album') ALBUM
           div.form-group
             input#album.form-control(type='text' name='album', placeholder='album name')
