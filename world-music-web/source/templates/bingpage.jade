@@ -13,3 +13,13 @@ block content
               input#info.form-control(type='text' name='info', placeholder='Music Key Words')
             .myright
               button#mybutton.btn.btn-primary(type='submit') SEARCH
+
+      table
+        thead
+          tr
+            th SEARCH RESULT
+        tbody
+          - each item in rows
+            tr
+              td
+                a(href = item.url)= item.name

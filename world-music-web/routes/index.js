@@ -1,12 +1,17 @@
 
 var express = require('express');
 var router = express.Router();
-var path = require('path');
-  var mysql = require('mysql');
+var path1 = require('path');
+var mysql = require('mysql');
+
+var https = require('https');
+var subscriptionKey = 'ca99f77c6dbd460cb89a73353941b9e7';
+var host = 'api.cognitive.microsoft.com';
+var path = '/bing/v7.0/search';
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  template = require('jade').compileFile(path.join(__dirname, '../', '/source/templates/homepage.jade'));
-  //res.sendFile(path.join(__dirname, '../', 'views', 'index.html'));
+  template = require('jade').compileFile(path1.join(__dirname, '../', '/source/templates/homepage.jade'));
+  //res.sendFile(path1.join(__dirname, '../', 'views', 'index.html'));
   try {
     var html = template({ title: 'Home' })
     res.send(html)
@@ -15,9 +20,75 @@ router.get('/', function(req, res, next) {
   }
 });
 
+var getJSON = function (search, onResult){
+  console.log('Searching the Web for: ' + search);
+  var request_params = {
+        method : 'GET',
+        hostname : host,
+        path : path + '?q=' + encodeURIComponent(search),
+        headers : {
+            'Ocp-Apim-Subscription-Key' : subscriptionKey,
+        }
+    };
+  var reques = https.request(request_params, function (response) {
+    body = '';
+    response.on('data', function (d) {
+        body += d;
+    });
+    response.on('end', function () {
+        console.log('\nRelevant Headers:\n');
+        for (var header in response.headers)
+            // header keys are lower-cased by Node.js
+            if (header.startsWith("bingapis-") || header.startsWith("x-msedge-"))
+                 console.log(header + ": " + response.headers[header]);
+        //body = JSON.stringify(JSON.parse(body), null, '  ');
+        body = JSON.parse(body);
+        onResult(response.statusCode, body);
+        //console.log('\nJSON Response:\n');
+        //console.log(body.webPages.value);
+
+    });
+    response.on('error', function (e) {
+        console.log('Error: ' + e.message);
+    });
+  });
+  reques.end();
+}
+
+
+router.post('/bingpage', function(req, res, next) {
+  var term = req.body.info;
+  //console.log(this.body.webPages.value);
+  if (subscriptionKey.length === 32) {
+    //bing_web_search(term);
+    getJSON(term, function(statusCode, result) {
+      template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/bingpage.jade'));
+      // I could work with the result html/json here.  I could also just return it
+      //console.log("onResult: (" + statusCode + ")" + JSON.stringify(result));
+      //res.statusCode = statusCode;
+      //console.log('\nJSON Response:\n');
+      //console.log(result.webPages.value);
+
+      try {
+        var html = template({ title: 'Bing' , rows: result.webPages.value})
+        res.send(html)
+      } catch (e) {
+        next(e)
+      }
+      //res.send(result);
+    });
+
+  } else {
+      console.log('Invalid Bing Search API subscription key!');
+      console.log('Please paste yours into the source code.');
+  }
+
+});
+
+
 router.get('/find', function(req, res, next) {
-  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findpage.jade'));
-  //res.sendFile(path.join(__dirname, '../', 'views', 'reference.html'));
+  template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/findpage.jade'));
+  //res.sendFile(path1.join(__dirname, '../', 'views', 'reference.html'));
   // console.log(req.body)
   // if(req.body.all){
   //   var song = req.body.song;
@@ -42,8 +113,8 @@ router.get('/find', function(req, res, next) {
 });
 
 router.get('/recommend', function(req, res, next) {
-  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/recommendpage.jade'));
-  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/recommendpage.jade'));
+  //res.sendFile(path1.join(__dirname, '../', 'views', 'insert.html'));
   try {
     var html = template({ title: 'Recommend' })
     res.send(html)
@@ -55,8 +126,8 @@ router.get('/recommend', function(req, res, next) {
 
 
 // router.get('/facebook', function(req, res, next) {
-//   template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/login.jade'));
-//   //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+//   template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/login.jade'));
+//   //res.sendFile(path1.join(__dirname, '../', 'views', 'insert.html'));
 //   try {
 //     var html = template({ title: 'Login With Facebook' })
 //     res.send(html)
@@ -67,8 +138,8 @@ router.get('/recommend', function(req, res, next) {
 // });
 
 router.get('/addition', function(req, res, next) {
-  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/additionpage.jade'));
-  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/additionpage.jade'));
+  //res.sendFile(path1.join(__dirname, '../', 'views', 'insert.html'));
   try {
     var html = template({ title: 'Addition' })
     res.send(html)
@@ -92,7 +163,7 @@ router.post('/addsuccess', function(req, res, next) {
   });
 
   console.log(req.body.song);
-  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/additionsuccess.jade'));
+  template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/additionsuccess.jade'));
   var randomNumberBetween0and19 = Math.floor(Math.random() * 200000000);
   console.log(randomNumberBetween0and19);
   var sql = 'INSERT INTO songs (track_id, title,artist_name, release_album) VALUES ("'+randomNumberBetween0and19+'", "'+songname+'", "'+singername+'", "'+albumname+'")';
@@ -138,7 +209,7 @@ MongoClient.connect("mongodb://cis550:CIS550Project@ds133776.mlab.com:33776/nosq
   //         throw err;
   //       }
   //       console.log(result);
-  //       template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
+  //       template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
   //       var html = template({ title: 'MUSIC', rows: result})
   //       res.send(html);
   //     });  
@@ -155,7 +226,7 @@ MongoClient.connect("mongodb://cis550:CIS550Project@ds133776.mlab.com:33776/nosq
           throw err;
         }
         console.log(result);
-        template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
+        template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
         var html = template({ title: 'MUSIC', rows: result})
         res.send(html);
       });  
@@ -171,7 +242,7 @@ MongoClient.connect("mongodb://cis550:CIS550Project@ds133776.mlab.com:33776/nosq
   //         throw err;
   //       }
   //       console.log(result);
-  //       template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
+  //       template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
   //       var html = template({ title: 'MUSIC', rows: result})
   //       res.send(html);
   //     });  
@@ -183,7 +254,7 @@ MongoClient.connect("mongodb://cis550:CIS550Project@ds133776.mlab.com:33776/nosq
   //var sql = 'SELECT title from genres';
   // var sql = 'SELECT artist_name from songs where title ="'+ songname+ '"';
 
-  // template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
+  // template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
   
   // //res.send(html);
   // connection.query(sql, function(err, rows, fields) {
@@ -206,7 +277,7 @@ if(req.body.typeselect == 'songandsinger'){
           throw err;
         }
         console.log(result);
-        template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
+        template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
         var html = template({ title: 'MUSIC', rows: result})
         res.send(html);
       });  
@@ -230,7 +301,7 @@ if(req.body.typeselect == 'album'){
           throw err;
         }
         console.log(result);
-        template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
+        template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
         var html = template({ title: 'MUSIC', rows: result})
         res.send(html);
       });  
@@ -254,7 +325,7 @@ if(req.body.typeselect == 'all'){
           throw err;
         }
         console.log(result);
-        template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
+        template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
         var html = template({ title: 'MUSIC', rows: result})
         res.send(html);
       });  
@@ -280,8 +351,8 @@ router.get('/recommendmusic1', function(req, res, next) {
   //var sql = 'select title, artist_name, year, artist_hotttnesss from songs order by artist_hotttnesss desc limit 1';
   //var sql = 'select DISTINCT title, artist_name, year, artist_hotttnesss, mbtag from songs LEFT JOIN artist_mbtag ON songs.artist_id = artist_mbtag.artist_id order by artist_hotttnesss desc limit 1';
   var sql = 'select DISTINCT title, artist_name, year, artist_hotttnesss, artist_mbtag.mbtag from songs LEFT JOIN artist_mbtag ON songs.artist_id = artist_mbtag.artist_id GROUP BY artist_name order by artist_hotttnesss desc limit 9';
-  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/recommendmusicpage1.jade'));
-  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/recommendmusicpage1.jade'));
+  //res.sendFile(path1.join(__dirname, '../', 'views', 'insert.html'));
   connection.query(sql, function(err, rows, fields) {
     if (err) throw err;
     //console.log(rows[1].title);
@@ -307,8 +378,8 @@ router.get('/recommendmusic2', function(req, res, next) {
   //var sql = 'select title, artist_name, year, artist_hotttnesss from songs order by artist_hotttnesss desc limit 1';
   var sql = 'select DISTINCT title, artist_name, year, artist_hotttnesss, artist_mbtag.mbtag from songs LEFT JOIN artist_mbtag ON songs.artist_id = artist_mbtag.artist_id GROUP BY artist_name order by artist_hotttnesss desc limit 9';
 
-  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/recommendmusicpage2.jade'));
-  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/recommendmusicpage2.jade'));
+  //res.sendFile(path1.join(__dirname, '../', 'views', 'insert.html'));
   connection.query(sql, function(err, rows, fields) {
     if (err) throw err;
     var html = template({ title: 'MUSIC', rows: rows})
@@ -330,8 +401,8 @@ router.get('/recommendmusic3', function(req, res, next) {
   //var sql = 'select title, artist_name, year, artist_hotttnesss from songs order by artist_hotttnesss desc limit 1';
   var sql = 'select DISTINCT title, artist_name, year, artist_hotttnesss, artist_mbtag.mbtag from songs LEFT JOIN artist_mbtag ON songs.artist_id = artist_mbtag.artist_id GROUP BY artist_name order by artist_hotttnesss desc limit 9';
 
-  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/recommendmusicpage3.jade'));
-  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/recommendmusicpage3.jade'));
+  //res.sendFile(path1.join(__dirname, '../', 'views', 'insert.html'));
   connection.query(sql, function(err, rows, fields) {
     if (err) throw err;
     var html = template({ title: 'MUSIC', rows: rows})
@@ -353,8 +424,8 @@ router.get('/recommendmusic4', function(req, res, next) {
   //var sql = 'select title, artist_name, year, artist_hotttnesss from songs order by artist_hotttnesss desc limit 1';
   var sql = 'select DISTINCT title, artist_name, year, artist_hotttnesss, artist_mbtag.mbtag from songs LEFT JOIN artist_mbtag ON songs.artist_id = artist_mbtag.artist_id GROUP BY artist_name order by artist_hotttnesss desc limit 9';
 
-  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/recommendmusicpage4.jade'));
-  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/recommendmusicpage4.jade'));
+  //res.sendFile(path1.join(__dirname, '../', 'views', 'insert.html'));
   connection.query(sql, function(err, rows, fields) {
     if (err) throw err;
     var html = template({ title: 'MUSIC', rows: rows})
@@ -376,8 +447,8 @@ router.get('/recommendmusic5', function(req, res, next) {
   //var sql = 'select title, artist_name, year, artist_hotttnesss from songs order by artist_hotttnesss desc limit 1';
   var sql = 'select DISTINCT title, artist_name, year, artist_hotttnesss, artist_mbtag.mbtag from songs LEFT JOIN artist_mbtag ON songs.artist_id = artist_mbtag.artist_id GROUP BY artist_name order by artist_hotttnesss desc limit 9';
 
-  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/recommendmusicpage5.jade'));
-  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/recommendmusicpage5.jade'));
+  //res.sendFile(path1.join(__dirname, '../', 'views', 'insert.html'));
   connection.query(sql, function(err, rows, fields) {
     if (err) throw err;
     var html = template({ title: 'MUSIC', rows: rows})
@@ -399,8 +470,8 @@ router.get('/recommendmusic6', function(req, res, next) {
   //var sql = 'select title, artist_name, year, artist_hotttnesss from songs order by artist_hotttnesss desc limit 1';
   var sql = 'select DISTINCT title, artist_name, year, artist_hotttnesss, artist_mbtag.mbtag from songs LEFT JOIN artist_mbtag ON songs.artist_id = artist_mbtag.artist_id GROUP BY artist_name order by artist_hotttnesss desc limit 9';
 
-  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/recommendmusicpage6.jade'));
-  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/recommendmusicpage6.jade'));
+  //res.sendFile(path1.join(__dirname, '../', 'views', 'insert.html'));
   connection.query(sql, function(err, rows, fields) {
     if (err) throw err;
     var html = template({ title: 'MUSIC', rows: rows})
@@ -422,8 +493,8 @@ router.get('/recommendmusic7', function(req, res, next) {
   //var sql = 'select title, artist_name, year, artist_hotttnesss from songs order by artist_hotttnesss desc limit 1';
   var sql = 'select DISTINCT title, artist_name, year, artist_hotttnesss, artist_mbtag.mbtag from songs LEFT JOIN artist_mbtag ON songs.artist_id = artist_mbtag.artist_id GROUP BY artist_name order by artist_hotttnesss desc limit 9';
 
-  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/recommendmusicpage7.jade'));
-  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/recommendmusicpage7.jade'));
+  //res.sendFile(path1.join(__dirname, '../', 'views', 'insert.html'));
   connection.query(sql, function(err, rows, fields) {
     if (err) throw err;
     var html = template({ title: 'MUSIC', rows: rows})
@@ -445,8 +516,8 @@ router.get('/recommendmusic8', function(req, res, next) {
   //var sql = 'select title, artist_name, year, artist_hotttnesss from songs order by artist_hotttnesss desc limit 1';
   var sql = 'select DISTINCT title, artist_name, year, artist_hotttnesss, artist_mbtag.mbtag from songs LEFT JOIN artist_mbtag ON songs.artist_id = artist_mbtag.artist_id GROUP BY artist_name order by artist_hotttnesss desc limit 9';
 
-  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/recommendmusicpage8.jade'));
-  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/recommendmusicpage8.jade'));
+  //res.sendFile(path1.join(__dirname, '../', 'views', 'insert.html'));
   connection.query(sql, function(err, rows, fields) {
     if (err) throw err;
     var html = template({ title: 'MUSIC', rows: rows})
@@ -468,8 +539,8 @@ router.get('/recommendmusic9', function(req, res, next) {
   //var sql = 'select title, artist_name, year, artist_hotttnesss from songs order by artist_hotttnesss desc limit 1';
   var sql = 'select DISTINCT title, artist_name, year, artist_hotttnesss, artist_mbtag.mbtag from songs LEFT JOIN artist_mbtag ON songs.artist_id = artist_mbtag.artist_id GROUP BY artist_name order by artist_hotttnesss desc limit 9';
 
-  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/recommendmusicpage9.jade'));
-  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/recommendmusicpage9.jade'));
+  //res.sendFile(path1.join(__dirname, '../', 'views', 'insert.html'));
   connection.query(sql, function(err, rows, fields) {
     if (err) throw err;
     var html = template({ title: 'MUSIC', rows: rows})
