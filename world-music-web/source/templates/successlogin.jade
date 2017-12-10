@@ -1,0 +1,33 @@
+extend default
+
+block content
+  .p
+  Successfully Logined in!
+  .wrapper
+      .left
+        table(margin)
+          thead
+            tr
+              th(align='left') User id
+          tbody
+              tr
+                td= user.facebook.id
+        table
+          thead
+            tr
+              th(align='left') Name
+          tbody
+              tr
+                td= user.facebook.name
+
+        table
+          thead
+            tr
+              th(align='left') Email
+          tbody
+              tr
+                td= user.facebook.email
+
+      .right
+        img(src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/F_icon.svg/2000px-F_icon.svg.png", width="380")
+  
