@@ -18,7 +18,9 @@
     "nodemon": "^1.9.2",
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
-    "stylus": "^0.54.5"
+    "stylus": "^0.54.5",
+    "audio-loader": "1.0.3",
+    "audio-play": "2.2.0"
   },
   "devDependencies": {},
   "scripts": {
