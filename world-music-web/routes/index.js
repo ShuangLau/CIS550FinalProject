@@ -370,6 +370,74 @@ if(req.body.typeselect == 'all'){
 
 });
 
+
+
+//////////////////////////////starttweet///////////////////////////
+
+router.get('/twitterfeed', function(req, res, next) {
+  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/twittersearch.jade'));
+  //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+  try {
+    var html = template({ title: 'twittersearch' })
+    res.send(html)
+  } catch (e) {
+    next(e)
+  }
+
+});
+
+
+router.post('/searchtweet', function(req, res, next) {
+  console.log(req.body.kwd);
+
+
+   console.log("292");
+  var Twit = require('twit')
+    console.log("294");
+  var client = new Twit({
+   consumer_key:         'MgHpLpXZ7STuxPBsRkNH0zWsn',
+   consumer_secret:      'Taf4LXKFBjtrFyMMMStZN4Uw0ivjDYZO7MCAvqdpYnA4iXiHWK',
+   access_token:         '906548691263037440-hMQSWaJ2qlS9thzfPr7DbkKhx9kUSqG',
+   access_token_secret:  'lXrLNRVkf5lrloBA1tPySS0m3VYLJh9tx8zK6GhEvaNrD',
+   timeout_ms:           60*1000,  // optional HTTP request timeout to apply to all requests.
+  })
+
+  console.log(req.body.kwd);
+
+  var keyword = req.body.kwd;
+
+  var params = {
+    q: keyword,
+    count:100
+  }
+
+  //var 
+  client.get('search/tweets', params, function(err, data, response){
+    //console.log(data);
+    var feeds = data.statuses;
+    var twitter_result = new Object();
+    twitter_result.result = [];
+      for(var i = 0; i < feeds.length; i++) {
+        var twt = feeds[i];
+        var tt = new Object();
+        tt.user = twt.user.name;
+        tt.text = twt.text;
+        twitter_result.result.push(tt);
+      }
+      console.log(twitter_result);
+
+      template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/twittersearchresult.jade'));
+      var html = template({ title: 'Newest 100 twitter feed about '+params.q, rows: twitter_result.result})
+      res.send(html);
+
+
+  });
+
+
+});
+
+/////////////////////////////endtweet/////////////////////////////
+
 router.get('/recommendmusic1', function(req, res, next) {
   var connection = mysql.createConnection({
     host     : "cis550project.cod7doq3mxuo.us-west-1.rds.amazonaws.com",

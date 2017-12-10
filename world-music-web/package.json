@@ -20,7 +20,8 @@
     "passport-facebook": "^2.1.1",
     "stylus": "^0.54.5",
     "audio-loader": "1.0.3",
-    "audio-play": "2.2.0"
+    "audio-play": "2.2.0",
+    "twit":">=0.0.0"
   },
   "devDependencies": {},
   "scripts": {
