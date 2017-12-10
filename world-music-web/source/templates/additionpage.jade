@@ -7,16 +7,13 @@ block content
         h1.display-4.m-b-2 L'équipe
 
         // search form
-        form(method='POST' action='/add')
+        form(method='POST' action='/addsuccess')
           label(for='song') SONG
           div.form-group
             input#song.form-control(type='text', placeholder='song name' name='song', width="48")
           label(for='singer') SINGER
           div.form-group
             input#singer.form-control(type='text', placeholder='singer name' name='singer')
-          label(for='genre') GENRE
-          div.form-group
-            input#genre.form-control(type='text', placeholder='song genre' name='genre')
           label(for='album') ALBUM
           div.form-group
             input#album.form-control(type='text' name='album', placeholder='album name')
