@@ -317,7 +317,7 @@ if(req.body.typeselect == 'album'){
         //})
 
         //console.log(result);
-        template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
+        template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
         var html = template({ title: 'MUSIC', rows: result})
         var trackfile = result[0].track_file;
         var downloadurl = "http://freemusicarchive.org/file/"+trackfile;
@@ -378,7 +378,7 @@ router.get('/twitterfeed', function(req, res, next) {
   template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/twittersearch.jade'));
   //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
   try {
-    var html = template({ title: 'twittersearch' })
+    var html = template({ title: 'TwitterSearch' })
     res.send(html)
   } catch (e) {
     next(e)
@@ -428,6 +428,7 @@ router.post('/searchtweet', function(req, res, next) {
 
       template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/twittersearchresult.jade'));
       var html = template({ title: 'Newest 100 twitter feed about '+params.q, rows: twitter_result.result})
+      console.log(twitter_result.result);
       res.send(html);
 
 

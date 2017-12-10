@@ -5,10 +5,12 @@ block content
   table
     thead
       tr
-        th user
-        th tweet
+        th Users
+        th Tweets
     tbody
       - each item in rows
-        tr
-          td= item.user
-          td= item.text
+          tr
+            .mytd
+              td= item.user
+            .mytd
+              td= item.text
