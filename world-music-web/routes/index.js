@@ -279,17 +279,24 @@ if(req.body.typeselect == 'songandsinger'){
         if (err){
           throw err;
         }
-        console.log(result);
+        //console.log(result);
         template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
-        var html = template({ title: 'MUSIC', rows: result})
+        if(result.length == 0){
+          //console.log("hello");
+          result = [{"album_title": "No search match", "track_file":null}];
+          var html = template({ title: 'MUSIC', rows: result});
+          res.send(html);
+        }else{
+          var html = template({ title: 'MUSIC', rows: result})
         var trackfile = result[0].track_file;
         var downloadurl = "http://freemusicarchive.org/file/"+trackfile;
-        console.log(downloadurl);
         load(downloadurl).then(function (buffer) {
   // buffer is an AudioBuffer 
         play(buffer)
         })
         res.send(html);
+
+        }
       });  
       console.log("We are connected");
     }
@@ -310,24 +317,25 @@ if(req.body.typeselect == 'album'){
         if (err){
           throw err;
         }
-        //console.log(result.track_url);
-        //load('http://freemusicarchive.org/file/music/WFMU/AWOL/AWOL_-_A_Way_Of_Life/AWOL_-_06_-_This_World.mp3').then(function (buffer) {
-  // buffer is an AudioBuffer 
-         //play(buffer);
-        //})
-
         //console.log(result);
         template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
-        var html = template({ title: 'MUSIC', rows: result})
+        if(result.length == 0){
+          //console.log("hello");
+          result = [{"album_title": "No search match", "track_file":null}];
+          var html = template({ title: 'MUSIC', rows: result});
+          res.send(html);
+        }else{
+          var html = template({ title: 'MUSIC', rows: result})
         var trackfile = result[0].track_file;
         var downloadurl = "http://freemusicarchive.org/file/"+trackfile;
-        console.log(downloadurl);
         load(downloadurl).then(function (buffer) {
   // buffer is an AudioBuffer 
         play(buffer)
         })
-
         res.send(html);
+
+        }
+
       });  
       console.log("We are connected");
     }
@@ -350,15 +358,22 @@ if(req.body.typeselect == 'all'){
         }
         console.log(result);
         template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
-        var html = template({ title: 'MUSIC', rows: result})
+        if(result.length == 0){
+          console.log("hello");
+          result = [{"album_title": "No search match", "track_file":null}];
+          var html = template({ title: 'MUSIC', rows: result});
+          res.send(html);
+        }else{
+          var html = template({ title: 'MUSIC', rows: result})
         var trackfile = result[0].track_file;
         var downloadurl = "http://freemusicarchive.org/file/"+trackfile;
-        console.log(downloadurl);
         load(downloadurl).then(function (buffer) {
   // buffer is an AudioBuffer 
         play(buffer)
         })
         res.send(html);
+
+        }
       });  
       console.log("We are connected");
     }
