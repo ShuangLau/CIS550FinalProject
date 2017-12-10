@@ -1,0 +1,15 @@
+extend default
+
+block content
+ h1= title
+ p Welcome to #{title}
+ -var userlist = users
+ div
+   table.table.table-hover
+    thead
+      tr: th Users
+    tbody
+      each user in users
+        tr
+          td= item.user
+          td= item.text

@@ -1,0 +1,17 @@
+extend default
+
+block content
+    .main.container
+    .row
+      .col-md-6.col-md-offset-3
+        h1.display-4.m-b-2 L'équipe
+
+        // search form
+        form(method='POST' action='/searchtweet')
+          label(for='kwd') Keyword
+          div.form-group
+            input#kword.form-control(type='text', placeholder='drinkdrinkseafood' name='kwd', width="48")
+    
+
+
+          button.btn.btn-primary(type='submit') See twitter feed
