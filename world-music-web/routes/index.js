@@ -8,6 +8,9 @@ var https = require('https');
 var subscriptionKey = 'ca99f77c6dbd460cb89a73353941b9e7';
 var host = 'api.cognitive.microsoft.com';
 var path = '/bing/v7.0/search';
+
+var load = require('audio-loader');
+var play = require('audio-play');
 /* GET home page. */
 router.get('/', function(req, res, next) {
   template = require('jade').compileFile(path1.join(__dirname, '../', '/source/templates/homepage.jade'));
@@ -279,6 +282,13 @@ if(req.body.typeselect == 'songandsinger'){
         console.log(result);
         template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
         var html = template({ title: 'MUSIC', rows: result})
+        var trackfile = result[0].track_file;
+        var downloadurl = "http://freemusicarchive.org/file/"+trackfile;
+        console.log(downloadurl);
+        load(downloadurl).then(function (buffer) {
+  // buffer is an AudioBuffer 
+        play(buffer)
+        })
         res.send(html);
       });  
       console.log("We are connected");
@@ -300,9 +310,23 @@ if(req.body.typeselect == 'album'){
         if (err){
           throw err;
         }
-        console.log(result);
-        template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
+        //console.log(result.track_url);
+        //load('http://freemusicarchive.org/file/music/WFMU/AWOL/AWOL_-_A_Way_Of_Life/AWOL_-_06_-_This_World.mp3').then(function (buffer) {
+  // buffer is an AudioBuffer 
+         //play(buffer);
+        //})
+
+        //console.log(result);
+        template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
         var html = template({ title: 'MUSIC', rows: result})
+        var trackfile = result[0].track_file;
+        var downloadurl = "http://freemusicarchive.org/file/"+trackfile;
+        console.log(downloadurl);
+        load(downloadurl).then(function (buffer) {
+  // buffer is an AudioBuffer 
+        play(buffer)
+        })
+
         res.send(html);
       });  
       console.log("We are connected");
@@ -327,6 +351,13 @@ if(req.body.typeselect == 'all'){
         console.log(result);
         template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/findsearchnewpage.jade'));
         var html = template({ title: 'MUSIC', rows: result})
+        var trackfile = result[0].track_file;
+        var downloadurl = "http://freemusicarchive.org/file/"+trackfile;
+        console.log(downloadurl);
+        load(downloadurl).then(function (buffer) {
+  // buffer is an AudioBuffer 
+        play(buffer)
+        })
         res.send(html);
       });  
       console.log("We are connected");
