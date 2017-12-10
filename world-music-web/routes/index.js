@@ -1,3 +1,4 @@
+
 var express = require('express');
 var router = express.Router();
 var path = require('path');
@@ -51,6 +52,19 @@ router.get('/recommend', function(req, res, next) {
   }
 
 });
+
+
+// router.get('/facebook', function(req, res, next) {
+//   template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/login.jade'));
+//   //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
+//   try {
+//     var html = template({ title: 'Login With Facebook' })
+//     res.send(html)
+//   } catch (e) {
+//     next(e)
+//   }
+
+// });
 
 router.get('/addition', function(req, res, next) {
   template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/additionpage.jade'));

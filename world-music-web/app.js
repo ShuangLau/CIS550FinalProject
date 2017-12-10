@@ -1,18 +1,28 @@
 var express = require('express');
 var path = require('path');
+var mongoose = require('mongoose');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var expressValidator = require('express-validator');
 var mongo = require('mongodb');
-
+var passport = require('passport');
+var configDB = require('./config/database.js');
 var index = require('./routes/index');
+var session      = require('express-session');
+var flash    = require('connect-flash');
 
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname));
 // app.set('view engine', 'jade');
+
+// configuration ===============================================================
+mongoose.connect(configDB.url); // connect to our database
+
+require('./config/passport')(passport); // pass passport for configuration
+
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -24,6 +34,19 @@ app.use(cookieParser());
 app.use(expressValidator());
 //app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
+
+
+
+
+// required for passport
+app.use(session({
+    secret: 'ilovescotchscotchyscotchscotch', // session secret
+    resave: true,
+    saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
 
 // catch 404 and forward to error handler
 // app.use(function(req, res, next) {
@@ -46,7 +69,8 @@ app.use('/', index);
 // app.listen('3000', function(){
 // 	console.log('Server running on port 3000');
 // });
-
+// routes ======================================================================
+require('./app/routes.js')(app, passport); 
 
 app.listen(process.env.PORT || 3000, function () {
   console.log('Listening on http://localhost:' + (process.env.PORT || 3000))
