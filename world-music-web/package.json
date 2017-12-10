@@ -4,6 +4,8 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "audio-loader": "1.0.3",
+    "audio-play": "2.2.0",
     "body-parser": "^1.18.2",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.3",
@@ -19,9 +21,7 @@
     "passport": "^0.4.0",
     "passport-facebook": "^2.1.1",
     "stylus": "^0.54.5",
-    "audio-loader": "1.0.3",
-    "audio-play": "2.2.0",
-    "twit":">=0.0.0"
+    "twit": "^2.2.9"
   },
   "devDependencies": {},
   "scripts": {

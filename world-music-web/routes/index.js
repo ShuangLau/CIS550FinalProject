@@ -375,7 +375,7 @@ if(req.body.typeselect == 'all'){
 //////////////////////////////starttweet///////////////////////////
 
 router.get('/twitterfeed', function(req, res, next) {
-  template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/twittersearch.jade'));
+  template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/twittersearch.jade'));
   //res.sendFile(path.join(__dirname, '../', 'views', 'insert.html'));
   try {
     var html = template({ title: 'twittersearch' })
@@ -426,7 +426,7 @@ router.post('/searchtweet', function(req, res, next) {
       }
       console.log(twitter_result);
 
-      template = require('jade').compileFile(path.join(__dirname, '../',  '/source/templates/twittersearchresult.jade'));
+      template = require('jade').compileFile(path1.join(__dirname, '../',  '/source/templates/twittersearchresult.jade'));
       var html = template({ title: 'Newest 100 twitter feed about '+params.q, rows: twitter_result.result})
       res.send(html);
 

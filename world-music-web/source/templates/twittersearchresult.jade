@@ -1,15 +1,14 @@
 extend default
 
 block content
- h1= title
- p Welcome to #{title}
- -var userlist = users
- div
-   table.table.table-hover
+  h1= title
+  table
     thead
-      tr: th Users
+      tr
+        th user
+        th tweet
     tbody
-      each user in users
+      - each item in rows
         tr
           td= item.user
           td= item.text
