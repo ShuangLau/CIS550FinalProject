@@ -1,14 +1,18 @@
 extend default
 
 block content
-  h1= title
+  .main.container
+    .col-md-6.col-md-offset-3
+      h1.display-4.m-b-2 MUSIC
 
-  table
-    thead
-      tr
-        th Top ten album of the searched genre
-    tbody
-      - each item in rows
-        tr
-          td= item.album_title
-          td= item.track_url
+      table
+        thead
+          tr
+            th Click the Song name to download the song
+        tbody
+          - each item in rows
+            tr
+              td= item.album_title + ':'
+            tr
+              td
+                a(href = 'http://freemusicarchive.org/file/'+item.track_file)= item.track_title
