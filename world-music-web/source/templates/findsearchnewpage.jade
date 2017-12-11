@@ -16,3 +16,6 @@ block content
             tr
               td
                 a(href = 'http://freemusicarchive.org/file/'+item.track_file)= item.track_title
+                audio(controls='controls')
+                  source(src='track.ogg', type='audio/ogg')
+                  source(src='http://freemusicarchive.org/file/'+item.track_file, type='audio/mpeg')

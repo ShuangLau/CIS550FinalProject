@@ -328,10 +328,10 @@ if(req.body.typeselect == 'album'){
           var html = template({ title: 'MUSIC', rows: result})
         var trackfile = result[0].track_file;
         var downloadurl = "http://freemusicarchive.org/file/"+trackfile;
-        load(downloadurl).then(function (buffer) {
-  // buffer is an AudioBuffer 
-        play(buffer)
-        })
+  //       load(downloadurl).then(function (buffer) {
+  // // buffer is an AudioBuffer 
+  //       play(buffer)
+  //       })
         res.send(html);
 
         }
