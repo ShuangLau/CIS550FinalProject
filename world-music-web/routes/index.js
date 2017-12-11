@@ -288,13 +288,7 @@ if(req.body.typeselect == 'songandsinger'){
           res.send(html);
         }else{
           var html = template({ title: 'MUSIC', rows: result})
-        var trackfile = result[0].track_file;
-        var downloadurl = "http://freemusicarchive.org/file/"+trackfile;
-        load(downloadurl).then(function (buffer) {
-  // buffer is an AudioBuffer 
-        play(buffer)
-        })
-        res.send(html);
+          res.send(html);
 
         }
       });  
@@ -326,8 +320,8 @@ if(req.body.typeselect == 'album'){
           res.send(html);
         }else{
           var html = template({ title: 'MUSIC', rows: result})
-        var trackfile = result[0].track_file;
-        var downloadurl = "http://freemusicarchive.org/file/"+trackfile;
+        //var trackfile = result[0].track_file;
+        //var downloadurl = "http://freemusicarchive.org/file/"+trackfile;
   //       load(downloadurl).then(function (buffer) {
   // // buffer is an AudioBuffer 
   //       play(buffer)
@@ -365,12 +359,12 @@ if(req.body.typeselect == 'all'){
           res.send(html);
         }else{
           var html = template({ title: 'MUSIC', rows: result})
-        var trackfile = result[0].track_file;
-        var downloadurl = "http://freemusicarchive.org/file/"+trackfile;
-        load(downloadurl).then(function (buffer) {
+        //var trackfile = result[0].track_file;
+        //var downloadurl = "http://freemusicarchive.org/file/"+trackfile;
+        //load(downloadurl).then(function (buffer) {
   // buffer is an AudioBuffer 
-        play(buffer)
-        })
+        //play(buffer)
+        //})
         res.send(html);
 
         }
