@@ -413,7 +413,7 @@ router.post('/searchtweet', function(req, res, next) {
 
   console.log(req.body.kwd);
 
-  var keyword = req.body.kwd;
+  var keyword = 'MUSIC '+req.body.kwd+' ';
 
   var params = {
     q: keyword,
